@@ -4,7 +4,7 @@ PS do GRIS em 2021
 ## Datas de entrega
 
 [ ] Etica: 
-[ ] Arquitetura: 21/04
+[X] Arquitetura: 21/04
 [ ] Cripto: 30/04
 [ ] Pwning:
     [ ] ez buffoverflow
