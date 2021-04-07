@@ -1,0 +1,53 @@
+Usando os prints do esoj:
+
+main só chama outras funções:
+ - banner
+ - pergunta1
+ - pergunta2
+ - pergunta3
+ - fim
+
+banner só printa banner
+
+pergunta1 faz um strcmp com a entrada e "cache,obvio\n"
+e se der 0 (igual) printa "Resposta correta!"
+e o mais importante se não der 0 (diferente)
+seta ganhou para 0.
+
+Dessa forma, resposta1 = "cache,obvio\n"
+
+pergunta2 faz um loop comparando entrada com uma ``string surpresa''
+se algum xor de uma letra com a outra não der 0x41,
+então a entrada está errada.
+
+Assumindo que está na `de trás para frente' a entrada certa é:
+0x31 61 20 35 2f 2e 31 20 = ^0x41 => 0x70 20 61 74 6e 6f 70 61
+0x33 31 61 20 61 20 33 20 = ^0x41 => 0x72 70 20 61 20 61 72 61
+0x2f 28 61 20 2c 28 39 2e = ^0x41 => 0x6e 69 20 61 6d 69 78 6f
+0x4b 2e 20 22 34 33 35 32 = ^0x41 => 0x0a 6f 61 63 75 72 74 73
+0x00                      =========> Final
+
+0x70 20 61 74 6e 6f 70 61 = tochar => "p atnopa"
+0x72 70 20 61 20 61 72 61 = tochar => "rp a ara"
+0x6e 69 20 61 6d 69 78 6f = tochar => "ni amixo"
+0x0a 6f 61 63 75 72 74 73 = tochar => "\noacurts"
+0x00                      ==========> Final
+
+"p atnopa" = invert => "aponta p"
+"rp a ara" = invert => "ara a pr"
+"ni amixo" = invert => "oxima in"
+"noacurts" = invert => "strucao\n"
+0x00       ==========> Final
+
+resposta2 = "aponta para a proxima instrucao\n"
+
+(nota, ele sempre imprime "Resposta correta!")
+
+pergunta3 usa scanf para ler algo (assumimos um long)
+e compara isso com 0x1 bd5a 262d (em dec: 7 471 769 133).
+
+Dessa forma, assumindo que &DAT_0040208d é "%ld"
+resposta3 = "7471769133"
+
+fim verifica se alguma resposta estava errada
+e escreve uma resposta de acordo
