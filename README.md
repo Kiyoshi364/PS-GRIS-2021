@@ -3,7 +3,7 @@ PS do GRIS em 2021
 
 ## Datas de entrega
 
-- [X] Engenharia Reversa:
+- [X] Engenharia Reversa: 12/04
 - [ ] Etica: 
 - [X] Arquitetura: 21/04
 - [ ] Cripto: 30/04
