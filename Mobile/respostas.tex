@@ -1,0 +1,138 @@
+\documentclass{article}
+
+\usepackage[brazilian]{babel}
+
+\usepackage{verbatim}
+
+\renewcommand{\v}[1]{{}}
+
+\begin{document}
+\title{Mobile}
+\author{Hashimoto}
+\date{}
+\maketitle
+
+\section*{Questão 1}
+
+Sistema Opecional Android é um sistema operacional adaptado do linux para
+rodar aplicações no "estilo java" em celulares.
+
+\section*{Questão 2}
+
+Dalvik Virtual Machine é uma virtual usada para rodar programas em Androids.
+DVM possui seu próprio bytecode e é otimizada (Just In Time)
+para o ambiente móvel.
+
+\section*{Questão 3}
+
+Android Runtime usa uma técnica de compilação de código AOT (Ahead Of Time),
+levando a melhor desempenho e economia de bateria.
+
+\section*{Questão 4}
+
+Os passos de construção do apk são:
+\begin{enumerate}
+    \item Compilar .java para .class
+    \item Traduzir .class para .dex
+    \item Juntar .dex para construir .apk
+    \item Assinar o .apk
+    \item Alinhar o .apk
+\end{enumerate}
+
+\section*{Questão 5}
+
+Smali é um assembly language para bytecodes da DVM.
+
+\section*{Questão 6}
+
+\texttt{\
+method(I[[\v]\v]ILjava/lang/String;[\v]Ljava/lang/Object;)Ljava/lang/String;
+}
+
+\section*{Questão 7}
+
+Android Manifest é o arquivo que descreve o app,
+mostra informações importantes, como:
+\begin{itemize}
+    \item Nome do pacote
+    \item Permissões de acesso
+    \item Entry point (onde o app começa)
+    \item Nome do pacote
+\end{itemize}
+
+\section*{Questão 8}
+\ 
+
+A)
+\begin{verbatim}
+<activity android:label="@string/app_name" android:name="com.android.
+insecurebankv2.LoginActivity">
+    <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+        <category android:name="android.intent.category.LAUNCHER"/>
+    </intent-filter>
+</activity>
+\end{verbatim}
+
+B)
+Permissões de Risco:
+\begin{itemize}
+    \item Write External Storage
+    \item Send SMS
+    \item Use Credentials
+    \item Get Accounts
+    \item Read Profile
+    \item Read Contacts
+    \item Read External Storage
+    \item Read Call Log
+    \item Access Coarse Location
+\end{itemize}
+
+Permissões normais:
+\begin{itemize}
+    \item Internet
+    \item Read Phone State
+    \item Access Network State
+\end{itemize}
+
+C)
+\verb|com.android.insecurebankv2|
+
+D)
+Pode fazer backup e é debuggable.
+\begin{verbatim}
+<application android:allowBackup="true" android:debuggable="true"
+    android:icon="@mipmap/ic_launcher" android:label="@string/app_name"
+    android:theme="@android:style/Theme.Holo.Light.DarkActionBar">
+\end{verbatim}
+
+\section*{Questão 9}
+
+Intents são uma forma de ``chamar'' outros componentes
+para fazer alguma coisa, por exemplo tirar/escolher uma foto/vídeo.
+
+\section*{Questão 10}
+
+Intent Explícito especifica o componente que vai ser chamado.
+Já o Intent Implícito apenas informa o que é para ser feito
+(e o SO ``escolhe alguém para fazer'').
+
+\section*{Questão 11}
+
+Intent-filters são especificações para o SO
+dizendo as ``ações'' que um componente pode ser chamado
+para fazer.
+
+\section*{Questão 12}
+\ 
+
+A)
+Implícito. O componente não é informado.
+
+B)
+Implícito. O componente não é informado.
+
+C)
+Explícito. O componente é informado e é \texttt{ReceiverActivity.class}.
+
+\end{document}
