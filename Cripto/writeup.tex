@@ -1,0 +1,249 @@
+\documentclass{article}
+
+\usepackage[brazilian]{babel}
+\usepackage{amsmath}
+\usepackage{verbatim}
+
+\begin{document}
+\title{WriteUp Lattices}
+\author{Hashimoto}
+\date{}
+\maketitle
+
+\section{Vectors}
+
+O texto explica aritmética básica de Vetores
+e pede para calcular:
+\[
+    3 * ( 2 * v - w ) \cdot 2 * u
+\]
+dado que 
+\(
+    v = (2, 6, 3)
+\) \quad \(
+    w = (1, 0, 0)
+\) \quad \(
+    u = (7, 7, 2)
+\).
+
+Esse problema é introdutório,
+dá para fazer ``na mão'':
+
+\begin{gather*}
+    3 * ( 2 * v - w ) \cdot 2 * u \\
+    3 * ( 2 * (2, 6, 3) - (1, 0, 0) ) \cdot 2 * (7, 7, 2) \\
+    3 * ( (4, 12, 6) - (1, 0, 0) ) \cdot (14, 14, 4) \\
+    3 * (3, 12, 6) \cdot (14, 14, 4) \\
+    (9, 36, 18) \cdot (14, 14, 4) \\
+    9 \times 14 + 36 \times 14 + 18 \times 4 \\
+    126 + 504 + 72 \\
+    702
+\end{gather*}
+
+GG!
+
+\section{Size and Basis}
+
+O texto explica coisas sobre bases e tamanho/magnitude do vetor
+e pede para calcular o tamanho de
+\(
+    (4, 6, 2, 5)
+\)
+
+Novamente, dá para fazer na mão:
+
+\begin{gather*}
+    \| (4, 6, 2, 5) \| \\
+    \sqrt{ 4 \times 4 + 6 \times 6 + 2 \times 2 + 5 \times 5 } \\
+    \sqrt{ 16 + 36 + 4 + 25 } \\
+    \sqrt{ 81 }
+    9
+\end{gather*}
+
+GG!
+
+\section{Gram Schmidt}
+
+O texto dá o algoritmo de \emph{Gram-Schmidt},
+mas não normaliza, só torna os vetores ortogonais entre si
+(mudei um pouco o formato):
+\texttt{ \\
+    For (\(i := 0\); \(i < n\); \(i\ +\!\!= 1\)) do \\
+    . \(u_i := v_i\) \\
+    . For (\(j := 0\); \(j < i\); \(j\ +\!\!= 1\)) do \\
+    . . \(proj_{v_i \to u_j} := \frac{ v_i \cdot u_j }{ \|u_j\| } * u_j\) \\
+    . . \(u_i = u_i - proj_{v_i \to u_j} \) \\
+    . End For \\
+    End For 
+}
+
+O objetivo é achar o \(u_4[1]\)
+(arredondado para 5 casa decimais)
+com essa entrada:
+\[
+    v_1 = (4, 1, 3, -1), \quad
+    v_2 = (2, 1, -3, 4), \quad
+    v_3 = (1, 0, -2, 7), \quad
+    v_4 = (6, 2, 9, -5)
+\]
+
+Dessa vez fazer na mão vai ser meio chato,
+então fiz uma pequena biblioteca em \texttt{zig}
+(está em \texttt{``src/vector.zig''}).
+
+Fiz um programa com a entrada hard-coded
+(\texttt{gran-schmidt.zig}),
+e essa é a saída:
+\begin{verbatim}
+[
+    { 4.0e+00, 1.0e+00, 3.0e+00, -1.0e+00 },
+    { 2.5925925925925926e+00, 1.1481481481481481e+00, -2.5555555555555554e+00,
+3.851851851851852e+00 },
+    { -7.229219143576826e-01, -1.0201511335012596e+00, 2.012594458438287e+00,
+2.125944584382871e+00 },
+    { -3.619189659458133e-01, 9.161073825503352e-01, 2.1488938603032537e-01,
+1.1309967685806699e-01 }
+]
+\end{verbatim}
+
+Nosso \(u_4\) está na última linha, \(u_4[1]\) é
+\begin{align*}
+    & 9.161073825503352e-01 \\
+    & 0.9161073825503352 \\
+    & 0.91611
+\end{align*}
+
+GG!
+
+\section{What's a Lattice}
+
+O texto explica o que é uma \emph{Lattice},
+um \emph{Dominio Fundamental} de uma base
+e como se calcula o volume de um Domínio Fundamental dessa base.
+Então pede para calcular o volume do Domínio Fundamental dessa base:
+\[
+    v_1 = (6, 2, -3), \quad
+    v_2 = (5, 1, 4), \quad
+    v_3 = (2, 7, 1)
+\]
+
+Esse dá para fazer na mão,
+mas é mais fácil escrever um programa que faz as contas para mim.
+Está aqui (em \texttt{``src/lattice.zig''}) a saída:
+\begin{verbatim}
+    -2.55e+02
+\end{verbatim}
+
+Ou seja, \(-255\).
+
+NotGG \(:(\)
+
+Ah, o ``volume não pode ser negativo''.
+Então... \(255\).
+
+GG!
+
+\section{Gaussian Reduction}
+
+O texto cita os Problemas de procura
+do \emph{Menor Vetor} e do \emph{Vetor Mais Próximo}
+em uma Lattice.
+
+A \emph{Redução de Gauss em uma Lattice} é um algorítmo
+usado para resolver o Problema do Menor Vetor.
+\texttt{ \\
+    \( v_1, v_2 \) \\
+    While (\(true\)) do \\
+    . If ( \(\|v_2\| < \|v_1\|\) ) do \\
+    . . \(tmp := v_1\) \\
+    . . \(v_1 := v_2\) \\
+    . . \(v_2 := tmp\) \\
+    . End If \\
+    . \# Isso é uma divisão inteira \\
+    . \(m := floor\left(\frac{ v_1 \cdot v_2 }{ v_1 \cdot v_2 }\right) \) \\
+    . If (\(m = 0\)) do \\
+    . . return \(v_1\), \(v_2\) \\
+    . End If \\
+    . \(v_2 := v_2 - m * v_1\) \\
+    End While
+}
+
+Temos que aplicar o algoritmo para
+\[
+    v_1 = (846835985, 9834798552), \quad
+    v_2 = (87502093, 123094980)
+\]
+
+A saída \texttt{gaussian-reduction.zig} é:
+\begin{verbatim}
+    7410790865146821
+\end{verbatim}
+
+GG!
+
+\section{Find the Lattice}
+
+O texto me dá um algoritmo de geração de chaves e
+encriptação/decriptação, a chave pública e a cifra,
+temos que achar a chave privada e
+decriptar a cifra para achar a mensagem original.
+
+Algoritmo de geração de chaves é:
+\texttt{ \\
+    pub.x := primo(512) \\
+    limiteMax := pub.x / 2 \\
+    limiteMin := pub.x / 4 \\
+    priv.x := random(2, limiteMax) \\
+    While ($true$) do \\
+    . priv.y := randim(limiteMin, limiteMax) \\
+    . if (\(\)mdc(priv.x, priv.y)\( = 1\)) do \\
+    . . break While \\
+    . end If \\
+    end While \\
+    temp := inverseMod(priv.x, pub.x) \\
+    priv.y = \((temp * priv.y) \% pub.x\) \\
+    return pub priv
+}
+
+Algoritmo de encriptação é:
+\texttt{ \\
+    m := mensagem \\
+    r := random(2, pub.x / 2) \\
+    cifra := \((r * pub.y + m) \% pub.x\) \\
+    return cifra
+}
+
+Algoritmo de decriptação é:
+\texttt{ \\
+    c := cifra \\
+    temp := \((priv.x * c) \% q\) \\
+    mensagem := \((temp * \)inverseMod(priv.x, priv.y)\() \% priv.y\) \\
+    return mensagem
+}
+
+As informações dadas são:
+\begin{gather*}
+    pub.x = \\
+    7638232120454925879231554234011
+    8423476410178882190211753042173 \\
+    5871587863618325243345489649067
+    7496516149889316745664606749499 \\
+    241420160898019203925115292257 \\
+    pub.y = \\
+    2163268902194560093843693572170
+    1997075017877974979984634621295 \\
+    9223997358146265162297828263751
+    3865274199374452805292639586264 \\
+    791317439029535926401109074800 \\
+    cifra = \\
+    560569649525372066414288195690
+    862430757067185847748211965743 \\
+    616366366384473116903568234497
+    428637904912373335600912567192 \\
+    428031253275524116226726912348
+    6523
+\end{gather*}
+
+\section{Backpack Cryptography}
+
+\end{document}

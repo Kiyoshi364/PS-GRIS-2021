@@ -7,7 +7,7 @@ PS do GRIS em 2021
 - [/] Mobile: 19/04
 - [X] Etica: 20/04
 - [X] Arquitetura: 21/04
-- [ ] Cripto: 30/04
+- [/] Cripto: 30/04
 - [ ] Pwning:
     - [ ] ez buffoverflow
     - [ ] ez shellcode
