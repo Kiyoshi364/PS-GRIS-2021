@@ -1,0 +1,306 @@
+\documentclass{article}
+
+\usepackage[brazilian]{babel}
+
+\usepackage{verbatim}
+\usepackage{graphicx}
+
+\begin{document}
+\title{Mobile - WriteUp}
+\author{Hashimoto}
+\date{}
+\maketitle
+
+\section*{Passo 1 - Instalação do .apk}
+
+Para instalar o apk é ``só plugar'' o celular
+(tem que mexer no modo desenvolvedor também)
+e rodar:
+\begin{verbatim}
+$ adb install <path>/UnCrackabe-Level1.apk
+Performing Streamed Install
+Success
+\end{verbatim}
+Conseguimos instalar o apk!
+Mas quando abro o app, nada acontece
+(deveria aparecer um popup, né?).
+
+\includegraphics[height=.5\textheight]{imports/uncrackable.png}
+
+\newpage
+\section*{Passo 2 - Analizando AndroidManifest}
+
+Rodando o apktool:
+\begin{verbatim}
+$ apktool d <path>/UnCrackabe-Level1.apk
+I: Using Apktool 2.5.0 on UnCrackable-Level1.apk
+I: Loading resource table...
+I: Decoding AndroidManifest.xml with resources...
+I: Loading resource table from file: <path>\apktool\framework\1.apk
+I: Regular manifest package...
+I: Decoding file-resources...
+I: Decoding values */* XMLs...
+I: Baksmaling classes.dex...
+I: Copying assets and libs...
+I: Copying unknown files...
+I: Copying original files...
+\end{verbatim}
+temos uma pasta nova \texttt{UnCrackable-Level1}.
+
+Olhando dentro da pasta:
+\begin{verbatim}
+$ ls -la UnCrackabe-Level1
+total 13
+drwxr-xr-x 1 Daniel Kiyoshi   0 Apr 17 18:38 ./
+drwxr-xr-x 1 Daniel Kiyoshi   0 Apr 17 18:38 ../
+-rw-r--r-- 1 Daniel Kiyoshi 672 Apr 17 18:38 AndroidManifest.xml
+-rw-r--r-- 1 Daniel Kiyoshi 442 Apr 17 18:38 apktool.yml
+drwxr-xr-x 1 Daniel Kiyoshi   0 Apr 17 18:38 original/
+drwxr-xr-x 1 Daniel Kiyoshi   0 Apr 17 18:38 res/
+drwxr-xr-x 1 Daniel Kiyoshi   0 Apr 17 18:38 smali/
+\end{verbatim}
+
+O \texttt{AndroidManifest.xml} é assim:
+\begin{verbatim}
+$ cat UnCrackabe-Level1/AndroidManifest.hmtl
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+package="owasp.mstg.uncrackable1">
+    <application android:allowBackup="true" android:icon="@mipmap/ic_launcher"
+android:label="@string/app_name" android:theme="@style/AppTheme">
+        <activity android:label="@string/app_name"
+android:name="sg.vantagepoint.uncrackable1.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>
+\end{verbatim}
+
+Destacando algumas partes:
+\begin{itemize}
+    \item[] Activities:
+    \begin{verbatim}
+<activity android:label="@string/app_name"
+android:name="sg.vantagepoint.uncrackable1.MainActivity">
+    <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+        <category android:name="android.intent.category.LAUNCHER"/>
+    </intent-filter>
+</activity>
+    \end{verbatim}
+    \item[] Permissions:
+        Sem permissões
+\end{itemize}
+
+\newpage
+\section*{Passo 3 - Análise estática}
+
+Infelizmente o \texttt{jadx-gui} não funciona.
+
+\includegraphics[scale=1]{imports/jadxNaoFunciona.png}
+
+E o \texttt{jadx} retorna esse erro:
+\begin{verbatim}
+$ jadx <path>/UnCrackable-Level1.apk
+Invalid maximum heap size: -Xmx4g
+The specified size exceeds the maximum representable size.
+Error: Could not create the Java Virtual Machine.
+Error: A fatal exception has occurred. Program will exit.
+\end{verbatim}
+
+Não sei consertar esse erro então vamos olhar o assembly que o
+\texttt{apktool} gerou.
+
+\begin{verbatim}
+$ cd UnCrackable-Level1/smali/sg/vantagepoint
+$ ls -la
+total 4
+drwxr-xr-x 1 Daniel Kiyoshi 0 Apr 17 18:38 ./
+drwxr-xr-x 1 Daniel Kiyoshi 0 Apr 17 18:38 ../
+drwxr-xr-x 1 Daniel Kiyoshi 0 Apr 17 18:38 a/
+drwxr-xr-x 1 Daniel Kiyoshi 0 Apr 17 19:55 uncrackable1/
+$ ls -la a/
+total 12
+drwxr-xr-x 1 Daniel Kiyoshi    0 Apr 17 18:38 ./
+drwxr-xr-x 1 Daniel Kiyoshi    0 Apr 17 18:38 ../
+-rw-r--r-- 1 Daniel Kiyoshi  746 Apr 17 18:38 a.smali
+-rw-r--r-- 1 Daniel Kiyoshi  658 Apr 17 18:38 b.smali
+-rw-r--r-- 1 Daniel Kiyoshi 2442 Apr 17 18:38 c.smali
+$ ls -la uncrackable1/
+total 24
+drwxr-xr-x 1 Daniel Kiyoshi    0 Apr 17 19:55  ./
+drwxr-xr-x 1 Daniel Kiyoshi    0 Apr 17 18:38  ../
+-rw-r--r-- 1 Daniel Kiyoshi 2744 Apr 17 18:38  a.smali
+-rw-r--r-- 1 Daniel Kiyoshi 1066 Apr 17 18:38 `MainActivity$1.smali'
+-rw-r--r-- 1 Daniel Kiyoshi 1069 Apr 17 18:38 `MainActivity$2.smali'
+-rw-r--r-- 1 Daniel Kiyoshi 4678 Apr 17 18:38  MainActivity.smali
+\end{verbatim}
+
+Vamos mostrar o conteúdo dos arquivos no final do pdf.
+
+Primeiramente vamos dar um ``find root'' e achamos
+em \texttt{uncrackable/MainActivity.smali}
+no \texttt{.method protected onCreate(Landroid/os/Bundle;)V}
+a linha \texttt{const-string v0, "Root detected!"}
+
+Segue a minha ``Javicação'' desse método:
+\begin{verbatim}
+protected boolean onCreate(android.os.Bundle bundle) {
+    if ( a.c.a() || a.c.b() || a.c.c() ) {
+        // cond_0
+        this.a("Root detected!");
+    }
+
+    // cond_1
+    android.content.Context context = this.getAppiclationContext();
+
+    if ( a.b.a(context) ) {
+        this.a("App is debuggable!");
+    }
+
+    // cond_2
+    super.onCreate(bundle);
+
+    this.setContentView(0x7f03); // 0x7f06 = 32 518
+
+    return;
+}
+\end{verbatim}
+
+Então quando a aplicação é iniciada ele usa
+\texttt{a.c} para saber se tem root e
+\texttt{a.b} se o celular é debugável.
+
+Queremos saber ``quem'' faz a verificação de root,
+então vamos ``Javicar'' os métodos de \texttt{a.c}.
+
+\textbf{a/c.smali}
+\begin{verbatim}
+public static void boolean a() {
+    String s1 = java.lang.System.getenv("PATH");
+
+    String[] sArr = s1.split(":");
+
+    int sArrLen = sArr.length;
+
+    // goto_0
+    for ( int i = 0; i > sArrLen; i += 1 ) {
+        String string = sArrLen[i];
+
+        java.io.File file = new File(string, "su");
+
+        if ( file.exists() ) {
+            return true;
+        }
+        // cond_0
+    }
+
+    // cond_1
+    return false;
+}
+\end{verbatim}
+
+Esse ele procura nos diretórios de \texttt{PATH}
+se existe um arquivo chamado \texttt{su}.
+
+\begin{verbatim}
+public static boolean b() {
+
+    String tags = android.os.Build.TAGS;
+
+    if ( tags != null ) {
+        if ( tags.contains("test-keys") ) {
+            return true;
+        }
+    }
+    \\ cond_0
+    return false;
+}
+\end{verbatim}
+
+Ele procura se tem um "test-keys" na string
+\texttt{android.os.Build.TAGS}.
+Não sei o que isso significa,
+já que isso é algo específico de android.
+
+\begin{verbatim}
+public static boolean c() {
+    String sArr = [
+        "/system/app/Superuser.apk",
+        "/system/xbin/daemonsu",
+        "/system/etc/init.d/99SuperSUDaemon",
+        "/system/bin/.ext/.su",
+        "/system/etc/.has_su_daemon",
+        "/system/etc/.installed_su_daemon",
+        "/dev/com.koushikdutta.superuser.daemon/"
+    ];
+
+    int sArrLength = sArr.length;
+
+    // goto_0
+    for ( int i = 0; i < sArrLength; i += 1 ) {
+        String s = sArr[i];
+
+        java.io.File file = new File(s);
+
+        if ( exists() ) {
+            return true;
+        }
+        // cond_0
+    }
+    return false;
+}
+\end{verbatim}
+
+Esse metodo procura os arquivos
+\texttt{"/system/app/Superuser.apk",
+        "/system/xbin/daemonsu",
+        "/system/etc/init.d/99SuperSUDaemon",
+        "/system/bin/.ext/.su",
+        "/system/etc/.has\_su\_daemon",
+        "/system/etc/.installed\_su\_daemon",
+        "/dev/com.koushikdutta.superuser.daemon/"}
+e se alguma delas existe retorna true.
+
+\newpage
+\section*{Passo 4 - Implementando solução}
+
+Uma possível solução seria apagar os arquivos,
+(ou só renomeá-los para \texttt{\$nome\$.tmp},
+ou algo assim),
+isso passaria pelos \texttt{a.c.a()}
+e \texttt{a.c.c()}.
+
+Novamente, como não sei o que
+\texttt{android.os.Build.TAGS} faz
+não tenho ideias de como resolver
+(talvez até não tenha que fazer nada).
+
+\newpage
+\section*{Extra - Arquivos .smali}
+
+\textbf{a/a.smali}
+    \input{imports/a.a.smali.tex}
+
+\textbf{a/b.smali}
+    \input{imports/a.b.smali.tex}
+
+\textbf{a/c.smali}
+    \input{imports/a.c.smali.tex}
+
+\textbf{uncrackable/a.smali}
+    \input{imports/uncrackable.a.smali.tex}
+
+\textbf{uncrackable/MainActivity\$1.smali}
+    \input{imports/uncrackable.MainActivity1.smali.tex}
+
+\textbf{uncrackable/MainActivity\$2.smali}
+    \input{imports/uncrackable.MainActivity2.smali.tex}
+
+\textbf{uncrackable/MainActivity.smali}
+    \input{imports/uncrackable.MainActivity.smali.tex}
+
+\end{document}
