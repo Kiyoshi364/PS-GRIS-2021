@@ -201,7 +201,7 @@ Algoritmo de geração de chaves é:
     . end If \\
     end While \\
     temp := inverseMod(priv.x, pub.x) \\
-    priv.y = \((temp * priv.y) \% pub.x\) \\
+    pub.y = \((temp * priv.y) \% pub.x\) \\
     return pub priv
 }
 
@@ -216,7 +216,7 @@ Algoritmo de encriptação é:
 Algoritmo de decriptação é:
 \texttt{ \\
     c := cifra \\
-    temp := \((priv.x * c) \% q\) \\
+    temp := \((priv.x * c) \% pub.x\) \\
     mensagem := \((temp * \)inverseMod(priv.x, priv.y)\() \% priv.y\) \\
     return mensagem
 }
@@ -244,6 +244,69 @@ As informações dadas são:
     6523
 \end{gather*}
 
-\section{Backpack Cryptography}
+Por ler o algoritmo de geração de chaves sabemos que:
+\begin{itemize}
+    \item[-] \texttt{pub.x} é um primo de 512 bits.
+    \item[-] \( 2 \le \texttt{priv.x} < \frac{\texttt{pub.x}}{2} \)
+    \item[-] \( \frac{\texttt{pub.x}}{4} \le \texttt{priv.y} < \frac{\texttt{pub.x}}{2} \)
+    \item[-] \texttt{priv.x}, \texttt{priv.y} são primos entre si
+    \item[-] \( \texttt{priv.x} * temp = 1 \ mod \texttt{pub.x} \)
+    \item[-] \( \texttt{pub.y} = \texttt{priv.y} * temp) \ mod \texttt{pub.x} \)
+    \item[+] \( \texttt{priv.x} * \texttt{pub.y} = \texttt{priv.y} \ mod \texttt{pub.x} \)
+\end{itemize}
+
+Por ler o algoritmo de encriptação sabemos que:
+\begin{itemize}
+    \item[-] \( 2 \le r < \frac{\texttt{pub.x}}{2} \)
+    \item[-] \( \texttt{cifra} = r * \texttt{pub.y} + \texttt{m} \ mod \texttt{pub.x} \)
+\end{itemize}
+
+Por ler o algoritmo de decriptação sabemos que:
+\begin{itemize}
+    \item[-] \( temp = \texttt{priv.x} * \texttt{cifra} \ mod \texttt{pub.x} \)
+    \item[-] \( \texttt{priv.x} * inv = 1 \ mod \texttt{priv.y} \)
+    \item[-] \( \texttt{m} = temp * inv \ mod \texttt{priv.y} \)
+    \item[+] \( \texttt{priv.x} * \texttt{m} = temp \ mod \texttt{priv.y} \)
+\end{itemize}
+
+No fim, \emph{graças a ajudas univesitárias},
+só precisamos disso
+\begin{itemize}
+    \item \( \texttt{priv.x} * \texttt{pub.y} = \texttt{priv.y} \ mod \texttt{pub.x} \)
+\end{itemize}
+\begin{gather*}
+    \texttt{priv.x} * \texttt{pub.y} = \texttt{priv.y} \ mod \texttt{pub.x} \\
+    \texttt{priv.x} * \texttt{pub.y} - k * \texttt{pub.x} = \texttt{priv.y} \\
+    \texttt{priv.x} (\texttt{pub.y}, 1) -  k (\texttt{pub.x}, 1) =
+        (\texttt{priv.y}, \texttt{priv.x} - k)
+\end{gather*}
+
+Se usarmos \( \{ (\texttt{pub.y}, 1) , (\texttt{pub.x}, 1) \} \)
+como entrada para Redução de Gauss,
+vamos saber \emph{magicamente} que
+um dos retornos \( (x_1, y_1), (x_2, y_2) \) é o \texttt{priv.y}.
+
+Com o nosso \texttt{priv.y} (tentativa e erro com 4 possibilidades)
+podemos calcular o \texttt{priv.x}:
+\[
+    \texttt{priv.x} =
+    \texttt{priv.y} * \texttt{inverseMod(pub.y, pub.x)} \ mod \texttt{pub.x}
+\]
+
+Isso foi implementado em \texttt{where.py}
+\textit{(infelizmente zig não suporta números tão grande}.
+
+\begin{verbatim}
+0 b'crypto{Gauss_lattice_attack!}'
+1 b"u\xc9F\xfa\x91'\xb6[Y\xf6\xbb>\x1e\xb1\r\x8eN\xba\xe1\xf7\x90}mu\\u\xb3
+\xb6\xa9\x00\x15t"
+2 b'\x13C#d\x1cd@\xe60\xfdP\x19\xe8\x1d\xe8\x8f\xf0\x0br\xefV\xb3b\x11\xe6\x02
+\xe4\xf3*3\xb2\xc9'
+3 b'\x00'
+\end{verbatim}
+
+Está lá na primeira tentativa \verb.crypto{Gauss_lattice_attack!}.
+
+GG!
 
 \end{document}
