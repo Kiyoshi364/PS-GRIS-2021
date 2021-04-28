@@ -16,3 +16,4 @@ PS do GRIS em 2021
 - [ ] Linux:
 - [ ] Web:
 - [ ] Redes:
+- [ ] WAF:
