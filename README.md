@@ -18,4 +18,4 @@ PS do GRIS em 2021
     - [ ] ez buffoverflow
     - [ ] ez shellcode
     - [ ] defcon2019 speedrun 2
-- [ ] Linux:
+- [X] Linux:
