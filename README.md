@@ -8,12 +8,14 @@ PS do GRIS em 2021
 - [X] Etica: 20/04
 - [X] Arquitetura: 21/04
 - [X] Cripto: 30/04
+- [ ] WAF: 11/05
 - [X] Banco de Dados: 15/05
+- [ ] Fuzzing: 15/05
+- [ ] Seccomp: 15/05
+- [ ] Web: 18/05
+- [ ] Redes: 31/05
 - [ ] Pwning:
     - [ ] ez buffoverflow
     - [ ] ez shellcode
     - [ ] defcon2019 speedrun 2
 - [ ] Linux:
-- [ ] Web:
-- [ ] Redes:
-- [ ] WAF:
