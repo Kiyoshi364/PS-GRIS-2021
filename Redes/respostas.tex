@@ -1,0 +1,518 @@
+\documentclass{article}
+
+\usepackage[brazilian]{babel}
+
+\usepackage{amsmath}
+
+\begin{document}
+\title{Redes}
+\author{Hashimoto}
+\date{}
+\maketitle
+
+\section*{Questão 1}
+
+\begin{enumerate}
+    \item Física:
+        Transferência de dados brutos, converte sinais em bits e
+        vise-versa e os envia, não faz correção de erros.
+    \item Enlace:
+        Conecta 1 e 3, usa MAC, estabelece protocolo utilizado,
+        pode corrigir erros.
+    \item Rede:
+        Endereça pacotes, converte IP em MAC, decide se o pacote
+        deve ser roteado ou não.
+    \item Transporte:
+        Organiza pacotes (junta na ordem certa), pode se orientar
+        de acordo com o protocolo.
+    \item Sessão:
+        Estabelece uma forma de transmitir dados entre duas
+        aplicações, corrigue erros.
+    \item Apresentação:
+        Comprime e/ou Criptografa os dados.
+    \item Aplicação:
+        Escolhe aplicações e protocolos para serem usados.
+\end{enumerate}
+
+\section*{Questão 2}\
+
+Um domínio de broadcast é um segmento lógica de uma rede de computadores em
+que um aparelho conectado à rede é capaz de se comunicar com outro aparelho
+conectado à rede sem a necessidade de utilizar um dispositivo de roteamento.
+
+Um domínio de colisão é uma área lógica onde os pacotes podem colidir uns
+contra os outros.
+
+\newpage
+\section*{Questão 3}
+
+\subsection*{Domínios de Rede/Broadcast:}
+\begin{itemize}
+    \item PC1, Switch S1, PC2, Roteador R1
+    \item PC3, Roteador R1
+    \item Roteador R1, Roteador R2
+    \item PC4, HUB H1, PC5, Roteador R2
+\end{itemize}
+
+\subsection*{Domínios de Colisão:}
+\begin{itemize}
+    \item PC1, Switch S1
+    \item PC2, Switch S1
+    \item Switch S1, Roteador R1
+    \item Roteador R1, PC3
+    \item Roteador R1, Roteador R2
+    \item PC4, HUB H1, PC5, Roteador R2
+\end{itemize}
+
+\section*{Questão 4}
+
+\begin{tabular}{|c|c|c|c|c|}
+    \hline
+    N & MAC ORIG & IP ORIG & MAC DEST & IP DEST \\
+    \hline
+    1 & A         & A        & R1        & B        \\
+    2 & R1        & A        & R2        & B        \\
+    3 & R2        & A        & B         & B        \\
+    4 & B         & B        & R2        & A        \\
+    5 & A         & B        & R1        & A        \\
+    6 & R1        & B        & A         & A        \\
+    \hline
+\end{tabular}
+
+\begin{enumerate}
+    \item A manda mensagem para o R1.
+    \item R1 manda mensagem para R2.
+    \item R2 manda mensagem para B.
+    \item B manda ACK para R2.
+    \item R2 manda ACK para R1.
+    \item R1 manda ACK para A.
+\end{enumerate}
+
+\newpage
+\section*{Questão 5}
+
+\begin{tabular}{|c|c|c|c|c|}
+    \hline
+    N & MAC ORIG & IP ORIG & MAC DEST & IP DEST \\
+    \hline
+    1 & A         & A        & R1        & B        \\
+    2 & R1        & R1       & R2        & B        \\
+    3 & R2        & R1       & B         & B        \\
+    4 & B         & B        & R2        & R1       \\
+    5 & A         & B        & R1        & R1       \\
+    6 & R1        & B        & A         & A        \\
+    \hline
+\end{tabular}
+
+\begin{enumerate}
+    \item A manda mensagem para o R1.
+    \item R1 manda mensagem para R2.
+    \item R2 manda mensagem para B.
+    \item B manda ACK para R2.
+    \item R2 manda ACK para R1.
+    \item R1 manda ACK para A.
+\end{enumerate}
+
+\section*{Questão 6}\
+
+Segundo RFC793:
+\texttt{A} manda um \texttt{Syn} para \texttt{B}
+a fim de começar uma conexão, então \texttt{B}
+manda um \texttt{ACK} (confirmando o \texttt{Syn}) e um \texttt{Syn},
+e assim \texttt{A} responde com um \texttt{ACK} para
+o \texttt{Syn} e a conexão é estabelecida.
+
+\section*{Questão 7}\
+
+\texttt{MDI} e \texttt{MDI-X} são formas
+de ordenar as entradas dos fios
+(que estão dentro dos cabos),
+a diferença entre elas é que
+\texttt{TX +} e \texttt{-} trocam de lugar com
+\texttt{RX +} e \texttt{-}, e vice-versa.
+
+\section*{Questão 8}
+
+\begin{itemize}
+    \item \texttt{A  <-> S1}: Straight
+    \item \texttt{S1 <-> S2}: Cross
+    \item \texttt{S2 <-> R1}: Straight
+    \item \texttt{R1 <-> R2}: Cross
+    \item \texttt{R2 <->  B}: Cross
+\end{itemize}
+
+\newpage
+\section*{Questão 9}
+
+\begin{enumerate}
+    \item Broadcast \\
+        Rede: 177.32.168.216 \\
+        Host: 177.32.168.217 - 177.32.168.212 \\
+        Broadcast: 177.32.168.223
+
+    Cálculos: \\
+        223 = 0b 1101 1111 \\
+        248 = 0b 1111 1000 \\
+        1101 1000 = 216
+
+    \item Host \\
+        Rede: 204.20.128.0 \\
+        Host: 204.20.128.1 - 204.10.191.254  \\
+        Broadcast: 204.10.191.255
+
+    Cálculos: \\
+        18 = 8+8+2 \\
+        143 = 0b 1000 1111 \\
+        1000 0000 = 128 \\
+        1011 1111 = 191
+
+    \item Host \\
+        Rede:  36.72.0.0 \\
+        Host:  36.72.0.1 - 36.73.255.254 \\
+        Broadcast: 36.73.255.255
+
+    \item Rede \\
+        Rede:  7.26.0.64 \\
+        Host:  7.26.0.65 - 7.26.0.126 \\
+        Broadcast: 7.26.0.127
+
+    Cálculos: \\
+        26 = 8+8+8+2 \\
+        64 = 0b 0100 0000
+
+    \item Broadcast \\
+        Rede:  200.201.173.184 \\
+        Host:  200.201.173.183 - 200.201.173.186 \\
+        Broadcast: 200.201.173.187
+
+    Cálculos: \\
+        252 = 0b 1111 1100 \\
+        187 = 0b 1011 1011 \\
+        1011 1000 = 184
+\end{enumerate}
+
+\newpage
+\section*{Questão 10}
+
+\begin{enumerate}
+    \item Mesma rede \\
+        224 = 0b 111 0 0000 \\
+        154 = 0b 100 1 1010 \\
+        158 = 0b 100 1 1110 \\
+
+    \item Mesma rede \\
+        248 = 0b 1111 1 000 \\
+        142 = 0b 1000 1 110 \\
+        137 = 0b 1000 1 001 \\
+
+    \item Mesma Rede \\
+        10 = 8+2 \\ .\hspace{1.75em}
+             0b 11 00 0000 \\
+        45 = 0b 00 10 1010 \\
+        12 = 0b 00 00 1100 \\
+\end{enumerate}
+
+ \textit{
+Obs: Os números antes o byte onde a máscara corta são iguais, por isso não é
+necessário verificar.
+}
+
+\newpage
+\section*{Questão 11}\
+
+\begin{table}[h]
+    \centering
+    \label{Cheat Table 11}
+    {Cheat Table \\ \quad \\}
+    \begin{tabular}{|ccccc|}
+        \hline
+        $ 2^{ 2} -2 $&$ = $&$    2 $&$ \rightarrow $&$ /30 $\\
+        $ 2^{ 3} -2 $&$ = $&$    6 $&$ \rightarrow $&$ /29 $\\
+        $ 2^{ 4} -2 $&$ = $&$   14 $&$ \rightarrow $&$ /28 $\\
+        $ 2^{ 5} -2 $&$ = $&$   30 $&$ \rightarrow $&$ /27 $\\
+        $ 2^{ 6} -2 $&$ = $&$   62 $&$ \rightarrow $&$ /26 $\\
+        $ 2^{ 7} -2 $&$ = $&$  126 $&$ \rightarrow $&$ /25 $\\
+        $ 2^{ 8} -2 $&$ = $&$  254 $&$ \rightarrow $&$ /24 $\\
+        $ 2^{ 9} -2 $&$ = $&$  510 $&$ \rightarrow $&$ /23 $\\
+        $ 2^{10} -2 $&$ = $&$ 1022 $&$ \rightarrow $&$ /22 $\\
+        $ 2^{11} -2 $&$ = $&$ 2046 $&$ \rightarrow $&$ /21 $\\
+        \hline
+    \end{tabular}
+\end{table}
+
+Olhando nossa \textit{Cheat Table}, precisamos de:
+\begin{itemize}
+    \item \textbf{25 hosts:} /27 (sobram 5)
+    \item \textbf{60 hosts:} /26 (sobram 2)
+    \item \textbf{120 hosts:} /25 (sobram 6) [x2]
+    \item \textbf{500 hosts:} /23 (sobram 10) [x2]
+\end{itemize}
+
+Podemos dividir nosso /8 em /9, /10, /11, \(\dots\) /20, /21, /22 e /22.
+Vamos usar o primeiro /22 para gerar os dois /23 que precisamos.
+Vamos usar o segundo /22 para gerar dois /25, um /26 e um /27
+(e sobram /27, /25, /23).
+
+Segue um pequeno mapa: \\
+\begin{verbatim}
+/8->...->/21 -> /22 -> /23                      => 187.0.0.0   - 187.0.1.255
+           |      L--> /23                      => 187.0.2.0   - 187.0.3.255
+           L--> /22 -> /23 -> /24 -> /25        => 187.0.4.0   - 187.0.4.127
+                         |      L--> /25        => 187.0.4.128 - 187.0.4.255
+                         L--> /25 -> /26        => 187.0.5.0   - 187.0.5.63
+                                L--> /26 -> /27 => 187.0.5.64  - 187.0.5.95
+\end{verbatim}
+
+Considerando apenas os endereços que precisamos:
+\begin{itemize}
+    \item \textbf{/23}: 187.0.0.0 - 187.0.1.225
+    \item \textbf{/23}: 187.0.2.0 - 187.0.3.225
+    \item \textbf{/25}: 187.0.4.0 - 187.0.4.127
+    \item \textbf{/26}: 187.0.5.0 - 187.0.5.63
+    \item \textbf{/27}: 187.0.5.64 - 187.0.5.95
+\end{itemize}
+
+\newpage
+\section*{Questão 12}\
+
+RIP e OSPF são Interior Gateway Protol (IGP) e BGP é de Exterior Gateway
+Protocol (EGP).
+
+\section*{Questão 13}\
+
+Convertendo para unidade padrão:
+\begin{gather*}
+    64KB = 64 * 1024 * 8 = 524 \; 288 \; bits \\
+    32KB = 32 * 1024 * 8 = 262 \; 144 \; bits \\
+    15ms = 0.015s
+\end{gather*}
+
+Se todos mandam pacotes ao mesmo tempo:
+\begin{gather*}
+    524 \; 288 \; bits * 3 + 262 \; 144 \; bits * 2 \\
+    1 \; 626 \; 864 \; bits + 524 \; 288 \; bits \\
+    2 \; 151 \; 152 \; bits
+\end{gather*}
+
+Dividindo pela latência:
+\begin{gather*}
+    2 \; 151 \; 152 \; bits / 0.015 \; s \\
+    143 \; 410 \; 133, 333 \dots \; bits/s
+\end{gather*}
+
+Dividindo por \(8\) ou \(1024\) para mudar a unidade:
+\begin{gather*}
+    143 \; 410 \; 133, 333 \dots \; bits/s \\
+     17 \; 926 \; 266, 666 \dots \; B/s \\
+     17 \; 506, 119 \; 791 \; 666 \dots \; KB/s \\
+     17, 095 \; 820 \; 109 \; 049 \dots \; MB/s
+\end{gather*}
+
+\newpage
+\section*{Questão 14}
+
+\begin{itemize}
+    \item \textbf{Sequence Number}:
+        É o número do 1o byte da mensagem
+        que está sendo enviado nesse pacote.
+    \item \textbf{Acknowledment}:
+        É o número do próximo byte que espera receber,
+        confirmando o recebimento de todos os anteriores.
+    \item \textbf{Window Size}:
+        O tamanho da janela,
+        quantidade de pacotes que são enviados por vez.
+    \item \textbf{Flags}:
+        \begin{itemize}
+            \item URG:
+                A mensagem é urgente,
+                então deve ser enviada para a aplicação imediatamente.
+            \item ACK:
+                Marca que o campo ACK contém informação válida.
+            \item PSH:
+                Recebe prioridade (menor que urgente)
+                para o tratamento da mensagem.
+            \item RST:
+                Encerra abruptamente a conexão nos dois lados.
+            \item SYN:
+                Tenta iniciar uma conexão.
+            \item FIN:
+                Encerra a conexão normalmente por um lado.
+    \end{itemize}
+\end{itemize}
+
+\section*{Questão 15}\
+
+Uma mensagem TCP é dividida em vários pacotes e
+o número de sequenciamento de cada pacote é
+o mesmo do 1o byte enviado nesse pacote.
+Considerando Window Size como 1:
+
+Alice manda um pacote de sequencia $X$ e tamanho $N$ para Bob.
+Bob recebe e manda um pacote com ACK $X+N$
+Alice manda o próximo pacote de sequencia $X+N$ e tamanho $M$
+Bob recebe e manda um pacote com ACK $X+N+M$
+
+\section*{Questão 16}\
+
+Quando o timeout expira sem receber um ACK correspondente,
+retransmite o pacote e redefine o tamanho da janela para 1,
+voltando para \textit{slow start}.
+
+\section*{Questão 17}\
+
+O fast retransmit do TCP padrão funciona
+retransmitindo o pacote quando recebe um ACK duplicado 3 vezes
+(total de 4 ACKs iguais).
+
+\newpage
+\section*{Questão 18}
+
+\begin{itemize}
+    \item \textbf{Slow Start}:
+        Funciona enquando \(cwnd < threshold\),
+        \(cwnd\) duplica a cada ACK recebido.
+    \item \textbf{Congestion Avoidance}:
+        Funciona quando \(cwnd >= threshold\),
+        \(cwnd\) aumenta em 1 a cada ACK recebido.
+    \item Em caso de 3 ACKs duplicados é feito
+        \(threshold := cwnd / 2\) e \(cwnd := threshold\).
+    \item Em caso de \textit{timeout} é feito
+        \(threshold := cwnd / 2\) e \(cwnd := 1\).
+        \textit{(Obs: estamos em slow start.)}
+\end{itemize}
+
+\section*{Questão 19}\
+
+O comportamento serrilhado ocorre porque
+quando está em modo \textit{Congestion Avoidance},
+o tamanho da janela vai crescendo linearmente e
+quando ocorre um erro cai para metade.
+
+Isso é importante para TCP, pois esse comportamento é
+simples de ser implementado e
+busca maximizar a quantidade de dados transmitidos,
+evitando os congestionamentos.
+
+\section*{Questão 20}\
+
+\begin{itemize}
+    \item \textbf{A} envia os pacotes 1 até 8 para \textbf{B}.
+    \item \textbf{B} recebe os pacotes 2 até 9 em qualquer ordem,
+        e manda seus respectivos ACKs para \textbf{A}.
+    \item ACKs 2 e 3 se perdem.
+    \item \textbf{A} recebe ACKs 4 até 9 em qualquer ordem.
+    \item \textbf{A} envia os próximos pacotes 9 até 17 para \textbf{B}
+        \textit{(Obs: tamanho da janela aumentou em 1)}.
+\end{itemize}
+
+\section*{Questão 21}\
+
+Um Sistema Autônomo é um conjunto de redes, ou uma única rede, que além de
+estar sob uma gestão comum tem características e políticas de roteamento
+comuns.
+
+\newpage
+\section*{Questão 22}
+
+\begin{table}[h]
+    \centering
+\begin{tabular}{|c|c|c|}
+    \hline
+    & Requisição & Resposta \\ \hline
+    MAC DEST & 11111111 & MAC A \\ \hline
+    MAC ORIG & MAC A & MAC B \\ \hline
+    Controle & controle & controle \\ \hline
+    Cabeçalho & & \\ \hline
+    IP DEST & IP B & IP B \\ \hline
+    MAC DEST & ? & ? \\ \hline
+    ORIG & IP A & IP A \\ \hline
+    MAC ORIG & MAC A & MAC A \\ \hline
+    CRC & CRC & CRC \\ \hline
+\end{tabular}
+\end{table}
+
+\section*{Questão 23}\
+
+\textit{Carrier Sense Multiple Access with Collision Detection}
+é um algoritmo para prevenir,
+detectar e tratar colisões em redes Ethernet.
+
+Algoritmo:
+\begin{verbatim}
+    Mandar Frame:
+    . Se não tem frame pronto, espera ter um frame pronto.
+    . Se o meio está ocupado, espera ficar desocupado.
+    . Começa a transmitir o frame e monitore para detectar colisão.
+    . Se ocoreu colisão, pule para :Colisão Detectada.
+    . Resete `contador de retransmissão' e complete a transmissão do frame.
+\end{verbatim}
+\begin{verbatim}
+    Colisão Detectada:
+    . Continue a transmissão, mas com o `Jam Signal' (*) até um tempo mínimo.
+    . Incremete `contador de retransmissão'.
+    . Se `contador de retransmissão' >= `Máximo de Tentativas', aborte.
+    . Calcule um número aleatório e espere esse tempo.
+    . Tente transmitir o frame de novo.
+\end{verbatim}
+
+\texttt{(*)}\textit{:
+    isso é para avisar aos outros da rede que ocorreu colisão.
+}
+
+\newpage
+\section*{Questão 24}\
+
+Encapsulamento é quando uma coisa A, engloba uma coisa B e pode ou não
+adicionar outras coisas (geralmente adiciona). Em redes, acontece quando uma
+informação passa de uma camada para outra: a informação da camada mais alta
+passa a ser um campo para a camada mais baixa.
+
+Um exemplo: temos um pacote TCP e quando vamos fazer um pacote
+Ethernet usamos o pacote TCP inteiro como dados para o pacote Ethernet.
+
+\section*{Questão 25}\
+
+Um protocolo são vários conjuntos de ações que são estabelecidas para atingir
+um objetivo, em outras palavras são comportamentos acordados necessários para
+uma troca de informações.
+
+\section*{Questão 26}
+
+\begin{itemize}
+    \item \textbf{Atraso de transmissão}:
+        é o tempo necessário para transmitir cada bit do pacote.
+    \item \textbf{Atraso de fila}:
+        é o tempo que o pacote está em espera em fila antes de ser processado.
+    \item \textbf{Atraso de processamento}:
+        é o tempo necessário para ler o cabeçalho do pacote,
+        checar integridade dos dados,
+        e determinar para onde deve ser encaminhado.
+    \item \textbf{Atraso de propagação}:
+        é o tempo que leva para o pacote viajar de um nó para outro da rede.
+\end{itemize}
+
+\section*{Questão 27}\
+
+Uma possibilidade é ter muitas consultas ao banco de dados
+em um pequeno espaço de tempo,
+gerando um ``gargalo''
+(por atraso de fila e/ou processamento)
+nos últimos nós da loja,
+que estão conectados à fibra ótica.
+Uma solução para esse problema seria adicionar mais nós
+conectados à fibra ótica.
+
+Outro motivo seria a grande distância
+entre a loja e o banco de dados,
+levando a altos atrasos de propagação.
+Uma solução seria mover o banco de dados
+para um local mais próximo da loja.
+
+Uma maneira relativamente fácil de saber se é uma ou outra
+é esperar um momento onde a rede não está sendo usada
+e pingar o banco de dados.
+Se o ping demorar muito,
+mesmo com a rede sem uso,
+então há um grande atraso de propagação.
+
+\end{document}
