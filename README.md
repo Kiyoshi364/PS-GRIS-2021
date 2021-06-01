@@ -12,7 +12,7 @@ PS do GRIS em 2021
 - [X] Banco de Dados: 15/05
 - [X] Seccomp: 15/05
 - [ ] Web: 18/05
-- [ ] Fuzzing: 30/05
+- [/] Fuzzing: 30/05
 - [X] Redes: 31/05
 - [ ] Pwning:
     - [ ] ez buffoverflow
