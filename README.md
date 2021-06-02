@@ -14,8 +14,8 @@ PS do GRIS em 2021
 - [ ] Web: 18/05
 - [/] Fuzzing: 30/05
 - [X] Redes: 31/05
-- [ ] Pwning:
-    - [ ] ez buffoverflow
-    - [ ] ez shellcode
-    - [ ] defcon2019 speedrun 2
+- [*] Pwning:
+    - [*] ez buffoverflow
+    - [*] ez shellcode
+    - [*] defcon2019 speedrun 2
 - [X] Linux:
